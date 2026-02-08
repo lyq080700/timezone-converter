@@ -9,7 +9,7 @@ import '../globals.css'
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
-const DOMAIN = 'https://www.timezone-world-v0.com';
+const DOMAIN = 'https://v0-timezone-eight.vercel.app';
 
 
 type Locale = 'en' | 'zh';

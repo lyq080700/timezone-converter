@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-const DOMAIN = 'https://www.timezone-world-v0.com';
+const DOMAIN = 'https://v0-timezone-eight.vercel.app';
 
 export default function robots(): MetadataRoute.Robots {
   return {
