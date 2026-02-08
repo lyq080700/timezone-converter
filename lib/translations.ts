@@ -1,0 +1,46 @@
+export const translations = {
+  en: {
+    title: 'TimeZone Converter',
+    subtitle: 'Convert time across global timezones instantly',
+    currentTime: 'Current Time',
+    selectTimezone: 'Select a timezone',
+    addTimezone: 'Add Timezone',
+    yourTimezone: 'Your Timezone',
+    autoDetected: 'Auto-detected',
+    compareTimezones: 'Compare Timezones',
+    timestampConverter: 'Timestamp Converter',
+    date: 'Date',
+    time: 'Time',
+    remove: 'Remove',
+    language: 'Language',
+    features: {
+      title: 'Features',
+      autoDetect: 'Auto-detect timezone',
+      multiConvert: 'Multiple conversions',
+      realTime: 'Real-time updates',
+    },
+  },
+  zh: {
+    title: '时区转换器',
+    subtitle: '快速准确地转换全球时区时间',
+    currentTime: '当前时间',
+    selectTimezone: '选择时区',
+    addTimezone: '添加时区',
+    yourTimezone: '您的时区',
+    autoDetected: '自动检测',
+    compareTimezones: '对比时区',
+    timestampConverter: '时间戳转换',
+    date: '日期',
+    time: '时间',
+    remove: '移除',
+    language: '语言',
+    features: {
+      title: '功能特点',
+      autoDetect: '自动检测时区',
+      multiConvert: '多时区转换',
+      realTime: '实时更新',
+    },
+  },
+};
+
+export type Language = 'en' | 'zh';
