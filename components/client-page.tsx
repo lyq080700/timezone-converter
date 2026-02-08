@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -13,13 +14,20 @@ import {
 import { TimezoneCard } from '@/components/timezone-card';
 import { TimestampConverter } from '@/components/timestamp-converter';
 import { popularTimezones, detectUserTimezone, type TimezoneInfo } from '@/lib/timezones';
-import { translations, type Language } from '@/lib/translations';
+import { translations } from '@/lib/translations';
 import { Globe2, Plus, Clock } from 'lucide-react';
 
-export default function Home() {
-  const [userTimezone, setUserTimezone] = useState<string>('');
-  const [selectedTimezones, setSelectedTimezones] = useState<TimezoneInfo[]>([]);
-  const [language, setLanguage] = useState<Language>('en');
+type Locale = 'en' | 'zh';
+
+interface ClientPageProps {
+  locale: Locale;
+}
+
+export function ClientPage({ locale }: ClientPageProps) {
+  const router = useRouter();
+  const [userTimezone, setUserTimezone] = useState<string | null>(null);
+  const [selectedTimezones, setSelectedTimezones] = useState<TimezoneInfo[] | null>(null);
+  const [language, setLanguage] = useState<Locale>(locale);
   const [mounted, setMounted] = useState(false);
 
   const t = translations[language];
@@ -28,14 +36,25 @@ export default function Home() {
     setMounted(true);
     const detected = detectUserTimezone();
     setUserTimezone(detected);
-    
-    // Add some default timezones for comparison
+
     setSelectedTimezones([
       popularTimezones.find(tz => tz.value === 'America/New_York')!,
       popularTimezones.find(tz => tz.value === 'Europe/London')!,
       popularTimezones.find(tz => tz.value === 'Asia/Tokyo')!,
     ].filter(Boolean));
   }, []);
+
+  if (!mounted || !userTimezone || !selectedTimezones) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
+  const handleLanguageChange = (newLocale: string) => {
+    router.push(`/${newLocale}`);
+  };
 
   const addTimezone = (timezoneValue: string) => {
     const timezone = popularTimezones.find(tz => tz.value === timezoneValue);
@@ -48,25 +67,28 @@ export default function Home() {
     setSelectedTimezones(selectedTimezones.filter(tz => tz.value !== timezoneValue));
   };
 
+  if (!mounted || !userTimezone || !selectedTimezones) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
   const getUserTimezoneInfo = (): TimezoneInfo => {
-    const existing = popularTimezones.find(tz => tz.value === userTimezone);
+    const existing = popularTimezones.find(tz => tz.value === userTimezone!);
     if (existing) return existing;
     
     return {
-      value: userTimezone,
-      label: userTimezone.split('/').pop()?.replace(/_/g, ' ') || userTimezone,
+      value: userTimezone!,
+      label: userTimezone!.split('/').pop()?.replace(/_/g, ' ') || userTimezone!,
       offset: 'UTC+0',
       region: 'Auto',
     };
   };
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -79,7 +101,7 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground">{t.subtitle}</p>
               </div>
             </div>
-            <Select value={language} onValueChange={(val) => setLanguage(val as Language)}>
+            <Select value={language} onValueChange={handleLanguageChange}>
               <SelectTrigger className="w-32">
                 <SelectValue />
               </SelectTrigger>
@@ -92,10 +114,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="mx-auto max-w-6xl space-y-8">
-          {/* Your Timezone Section */}
           <section>
             <div className="mb-4 flex items-center gap-2">
               <Clock className="h-5 w-5 text-muted-foreground" />
@@ -111,12 +131,10 @@ export default function Home() {
             />
           </section>
 
-          {/* Timestamp Converter */}
           <section>
             <TimestampConverter language={language} defaultTimezone={userTimezone} />
           </section>
 
-          {/* Add Timezone */}
           <section>
             <Card>
               <CardContent className="pt-6">
@@ -141,7 +159,6 @@ export default function Home() {
             </Card>
           </section>
 
-          {/* Compare Timezones */}
           {selectedTimezones.length > 0 && (
             <section>
               <h2 className="mb-4 text-2xl font-bold">{t.compareTimezones}</h2>
@@ -160,7 +177,6 @@ export default function Home() {
             </section>
           )}
 
-          {/* Features */}
           <section className="pt-8">
             <h2 className="mb-6 text-center text-2xl font-bold">{t.features.title}</h2>
             <div className="grid gap-6 sm:grid-cols-3">
@@ -170,11 +186,9 @@ export default function Home() {
                     <Globe2 className="h-6 w-6" />
                   </div>
                   <h3 className="mb-2 font-semibold">{t.features.autoDetect}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {language === 'en' 
-                      ? 'Automatically detects your current timezone'
-                      : '自动检测您当前所在的时区'}
-                  </p>
+                   <p className="text-sm text-muted-foreground">
+                     {t.features.autoDetectDesc}
+                   </p>
                 </CardContent>
               </Card>
               <Card>
@@ -183,11 +197,9 @@ export default function Home() {
                     <Plus className="h-6 w-6" />
                   </div>
                   <h3 className="mb-2 font-semibold">{t.features.multiConvert}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {language === 'en'
-                      ? 'Compare multiple timezones simultaneously'
-                      : '同时对比多个时区的时间'}
-                  </p>
+                   <p className="text-sm text-muted-foreground">
+                     {t.features.multiConvertDesc}
+                   </p>
                 </CardContent>
               </Card>
               <Card>
@@ -196,11 +208,9 @@ export default function Home() {
                     <Clock className="h-6 w-6" />
                   </div>
                   <h3 className="mb-2 font-semibold">{t.features.realTime}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {language === 'en'
-                      ? 'Live clock updates every second'
-                      : '实时更新时钟，精确到秒'}
-                  </p>
+                   <p className="text-sm text-muted-foreground">
+                     {t.features.realTimeDesc}
+                   </p>
                 </CardContent>
               </Card>
             </div>
@@ -208,14 +218,9 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="mt-16 border-t bg-card py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>
-            {language === 'en'
-              ? 'Built for global professionals who need accurate timezone conversion'
-              : '为需要准确时区转换的全球专业人士打造'}
-          </p>
+          <p>{t.footer}</p>
         </div>
       </footer>
     </div>

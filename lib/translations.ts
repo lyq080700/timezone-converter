@@ -1,5 +1,10 @@
 export const translations = {
   en: {
+    tdk: {
+      title: 'TimeZone Converter - Convert Time Across Global Timezones',
+      description: 'Fast and accurate timezone conversion for developers, business professionals, and travelers. Auto-detects your timezone and supports multiple conversions.',
+    },
+    siteNames: 'TimeZone Converter',
     title: 'TimeZone Converter',
     subtitle: 'Convert time across global timezones instantly',
     currentTime: 'Current Time',
@@ -16,11 +21,21 @@ export const translations = {
     features: {
       title: 'Features',
       autoDetect: 'Auto-detect timezone',
+      autoDetectDesc: 'Automatically detects your current timezone',
       multiConvert: 'Multiple conversions',
+      multiConvertDesc: 'Compare multiple timezones simultaneously',
       realTime: 'Real-time updates',
+      realTimeDesc: 'Live clock updates every second',
     },
+    footer: 'Built for global professionals who need accurate timezone conversion',
   },
   zh: {
+    tdk: {
+      title: '时区转换器 - 全球时区转换工具',
+      description: '快速准确的时区转换工具，适合开发者、商务人士和旅行者。自动检测您的时区，支持多种时区同时转换。',
+    },
+    siteNames: '时区转换器',
+
     title: '时区转换器',
     subtitle: '快速准确地转换全球时区时间',
     currentTime: '当前时间',
@@ -37,9 +52,13 @@ export const translations = {
     features: {
       title: '功能特点',
       autoDetect: '自动检测时区',
+      autoDetectDesc: '自动检测您当前所在的时区',
       multiConvert: '多时区转换',
+      multiConvertDesc: '同时对比多个时区的时间',
       realTime: '实时更新',
+      realTimeDesc: '实时更新时钟，精确到秒',
     },
+    footer: '为需要准确时区转换的全球专业人士打造',
   },
 };
 

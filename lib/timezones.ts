@@ -46,6 +46,14 @@ export function detectUserTimezone(): string {
 }
 
 export function formatTimeInTimezone(date: Date, timezone: string): string {
+  if (!timezone || !Intl.DateTimeFormat().resolvedOptions().timeZone) {
+    return date.toLocaleString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    });
+  }
   return date.toLocaleString('en-US', {
     timeZone: timezone,
     hour: '2-digit',
@@ -56,6 +64,14 @@ export function formatTimeInTimezone(date: Date, timezone: string): string {
 }
 
 export function formatDateInTimezone(date: Date, timezone: string): string {
+  if (!timezone || !Intl.DateTimeFormat().resolvedOptions().timeZone) {
+    return date.toLocaleString('en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  }
   return date.toLocaleString('en-US', {
     timeZone: timezone,
     weekday: 'short',
