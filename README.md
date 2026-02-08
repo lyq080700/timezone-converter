@@ -26,22 +26,6 @@ A modern, fast, and accurate timezone converter built with Next.js 15 and React 
 - Node.js 18+
 - pnpm (recommended) or npm/yarn
 
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/timezone-converter.git
-cd timezone-converter
-
-# Install dependencies
-pnpm install
-
-# Start development server
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
 ## Deployment
 
 Deploy easily with Vercel:
