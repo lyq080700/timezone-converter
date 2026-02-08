@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { notFound } from 'next/navigation'
 import { translations } from '@/lib/translations'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import '../globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -65,7 +66,7 @@ export async function generateMetadata(
       description: t.tdk.description,
       images: [
         {
-          url: '/og-image.png',
+          url: '../og-image.png',
           width: 1200,
           height: 630,
           alt: t.siteNames,
@@ -76,7 +77,7 @@ export async function generateMetadata(
       card: 'summary_large_image',
       title: t.tdk.title,
       description: t.tdk.description,
-      images: ['/og-image.png'],
+      images: ['../og-image.png'],
       creator: '@timezoneconverter',
     },
     alternates: {
@@ -135,6 +136,7 @@ export default async function LocaleLayout(
       <body className={`font-sans antialiased`}>
         {props.children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
